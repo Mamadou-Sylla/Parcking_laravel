@@ -17,9 +17,8 @@
                 <nav class="space-x-4 text-gray-300 text-sm sm:text-base">
                 <div class="float-left block space-x-3">
                         <a class="no-underline hover:text-blue-500 inline-block" href="{{ route('home') }}">{{ __('Car') }}</a>
-                        <a class="no-underline hover:text-blue-500 inline-block" href="{{ route('customer.index') }}">{{ __('Customer') }}</a>
-                        <a class="no-underline hover:text-blue-500 inline-block" href="{{ route('login') }}">{{ __('Car') }}</a>
-                        <a class="no-underline hover:text-blue-500 inline-block" href="{{ route('login') }}">{{ __('Customer') }}</a>
+                        <a class="no-underline hover:text-blue-500 inline-block" href="{{ route('customer.index') }}">{{ __('Owner') }}</a>
+                        <a class="no-underline hover:text-blue-500 inline-block" href="{{ route('about') }}">{{ __('About') }}</a>
                 </div>
                 <button class="float-right">
                         <svg class="h-6 w-6 text-white"  width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">  <path stroke="none" d="M0 0h24v24H0z"/>  <path d="M16.2 4a9.03 9.03 0 1 0 3.9 12a6.5 6.5 0 1 1 -3.9 -12" /></svg>

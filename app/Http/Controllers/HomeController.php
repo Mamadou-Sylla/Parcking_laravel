@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Car;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -22,9 +23,22 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Car $customers)
     {
         $data = Car::paginate(10);
-        return view('home', compact('data')); 
+        
+         $customer = Customer::all();
+         return view('home', compact('data', 'customer')); 
     }
+
+     /**
+     * Show the about page.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function about()
+    {
+         return view('about'); 
+    }
+
 }

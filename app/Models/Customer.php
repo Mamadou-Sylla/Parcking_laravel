@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Car;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Customer extends Model
 {
@@ -12,4 +13,10 @@ class Customer extends Model
     protected $fillable = [
         'firstname', 'lastname', 'cni', 'call', 'email', 'address', 'avatar'
     ];
+
+    public function cars()
+    {
+        return $this->hasMany(Car::class);
+    }
+    
 }

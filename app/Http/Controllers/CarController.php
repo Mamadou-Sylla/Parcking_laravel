@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Car;
+use App\Mail\SendMail;
+use App\Models\Customer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CarController extends Controller
 {
@@ -23,8 +27,11 @@ class CarController extends Controller
      */
     public function create()
     {
-        //
+        $customer = Customer::all();
+        return view('car.create', compact('customer'));
+        // return view('car.create');
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -34,7 +41,29 @@ class CarController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            'brand' => ['required'],
+            'model' => ['required'],
+            'number' => ['required'],
+            'status' => ['required'],
+            'withdrawal' => ['required'],
+            'owner' => ['required'],
+            ]);
+        $car = new Car();
+        $car->brand = $request->brand;  
+        $car->model = $request->model;   
+        $car->number = $request->number;   
+        $car->status = $request->status;   
+        $car->withdrawal = $request->withdrawal; 
+        $car->customer_id = $request->owner;
+        $ownerInfo = Customer::find($car->customer_id);
+        $ownerMail = $ownerInfo->email;
+        // dd($ownerMail); 
+        $car->save(); 
+        $data = ['owner' => $ownerInfo, 'car' => $car];
+        Mail::to($ownerMail)->send(new SendMail($data));
+        session()->flash('alertAdd', 'Car created successfully');   
+        return redirect()->route('home');
     }
 
     /**
@@ -56,7 +85,11 @@ class CarController extends Controller
      */
     public function edit($id)
     {
-        //
+        $car = Car::find($id);
+        $ownerId = $car->customer_id;
+        $ownerInfo = Customer::find($ownerId);
+        $customer = Customer::all();
+        return view('car.update', compact('car', 'ownerInfo', 'customer'));
     }
 
     /**
@@ -66,9 +99,27 @@ class CarController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            'brand' => ['required'],
+            'model' => ['required'],
+            'number' => ['required'],
+            'status' => ['required'],
+            'withdrawal' => ['required'],
+            'owner' => ['required'],
+            ]);
+        $car = Car::find($request->id);
+        $car->brand = $request->brand;  
+        $car->model = $request->model;   
+        $car->number = $request->number;   
+        $car->status = $request->status;
+        $car->filing = $request->filing;    
+        $car->withdrawal = $request->withdrawal;  
+        $car->customer_id = $request->owner;   
+        $car->save();    
+        session()->flash('alertUpdate', 'Car updated successfully');
+         return redirect()->route('home');
     }
 
     /**
@@ -79,6 +130,9 @@ class CarController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $car = Car::find($id);
+        $car->delete();
+        session()->flash('alertDelete', 'Car deleted successfully');
+        return back();
     }
 }
